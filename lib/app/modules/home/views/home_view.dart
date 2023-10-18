@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:getx_app/test.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -14,10 +13,14 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: Colors.white,
         title: const Text(
           'Fake Store',
-          style: TextStyle(color: Color(0xFF802C6E), fontFamily: "Poppins"),
+          style: TextStyle(color: Color(0xFF802C6E), fontFamily: 'Poppins'),
         ),
-        centerTitle: true,
-        leading: Image.asset('asset/logo.png'),
+        leading: Center(
+          child: IconButton(
+            icon: Image.asset('asset/logo.png'),
+            onPressed: () {},
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -38,6 +41,23 @@ class HomeView extends GetView<HomeController> {
           Expanded(
             child: ProductGrid(),
           ),
+          Container(
+            alignment: Alignment.bottomRight,
+            padding: EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Color(0xFF802C6E)),
+              ),
+              child: Text(
+                'Add New Product',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -92,10 +112,10 @@ class Product {
 }
 
 final List<Product> products = [
-  Product(name: 'Produk 1', price: 10.99, image: 'assets/product1.jpg'),
-  Product(name: 'Produk 2', price: 19.99, image: 'assets/product2.jpg'),
-  Product(name: 'Produk 3', price: 20.99, image: 'assets/Image/Logo.png'),
-  Product(name: 'Produk 4', price: 15.99, image: 'assets/product1.jpg'),
-  Product(name: 'Produk 5', price: 12.99, image: 'assets/product2.jpg'),
-  Product(name: 'Produk 6', price: 30.99, image: 'assets/Image/Logo.png'),
+  Product(name: 'Produk 1', price: 10.99, image: 'asset/klimjacket.jpeg'),
+  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/backpack.jpg'),
+  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/kaos.png'),
+  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/tas.jpg'),
+  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/jakethnm.jpg'),
+  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/celana.jpg'),
 ];

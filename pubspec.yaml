@@ -18,11 +18,16 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
-
-fonts:
+  fonts:
     - family: Poppins
       fonts:
-        - asset: assets/Font/Poppins-Bold.ttf
-
-assets:
+        - asset: asset/Font/Poppins-Bold.ttf
+  assets:
     - asset/logo.png
+    - asset/image/jackets.jpg
+    - asset/image/backpack.jpg
+    - asset/klimjacket.jpeg
+    - asset/image/kaos.png
+    - asset/image/tas.jpg
+    - asset/image/jakethnm.jpg
+    - asset/image/celana.jpg
