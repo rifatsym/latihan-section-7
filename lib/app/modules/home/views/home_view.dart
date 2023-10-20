@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:getx_app/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  final HomeController homeController = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//APPBAR
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(
@@ -22,30 +24,205 @@ class HomeView extends GetView<HomeController> {
           ),
         ),
       ),
+//SEARCH BAR
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              style: TextStyle(fontSize: 16),
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                hintText: 'Search...',
-                hintStyle: TextStyle(fontSize: 16),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (text) {},
+          SingleChildScrollView(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  width: 230,
+                  height: 50,
+                  child: TextField(
+                    autocorrect: false,
+                    textInputAction: TextInputAction.search,
+                    decoration: InputDecoration(
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      labelText: 'Search Product',
+                      labelStyle: TextStyle(
+                        fontFamily: 'Poppins Light',
+                        color: Colors.grey,
+                      ),
+                      suffixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xff802c6e),
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  width: 100,
+                  height: 50,
+                  child: TextField(
+                    autocorrect: false,
+                    textInputAction: TextInputAction.search,
+                    decoration: InputDecoration(
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      labelText: 'Filter',
+                      labelStyle: TextStyle(
+                        fontFamily: 'Poppins Light',
+                        color: Colors.grey,
+                      ),
+                      suffixIcon: Icon(Icons.filter_alt_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xff802c6e),
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+
+//PRODUCT CARD
           Expanded(
-            child: ProductGrid(),
+            child: GridView.builder(
+              key: UniqueKey(),
+              padding: EdgeInsets.all(20),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 6.5 / 8.5,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                crossAxisCount: 2,
+              ),
+              itemCount: 6,
+              itemBuilder: (context, index) {
+                final product = homeController.products[index];
+
+                return GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.DETAIL_PRODUCT,
+                        arguments: controller.products[index]);
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 3,
+                          spreadRadius: 1,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            child: Image.asset(
+                              product.image ?? "",
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 7, left: 7),
+                          child: Text(
+                            product.title ?? "",
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: 'Poppins Bold',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                            maxLines: 1,
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 7, left: 7),
+                          child: Text(
+                            product.description ?? "",
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: 'Poppins Regular',
+                              fontSize: 10,
+                            ),
+                            maxLines: 2,
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 7, left: 7),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '\$${product.price?.toStringAsFixed(2) ?? 0}',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins Bold',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 7, right: 7),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Color(0xffffaa4a),
+                                      size: 15,
+                                    ),
+                                    SizedBox(width: 1),
+                                    Text(
+                                      '${homeController.products[index].rating?.rate ?? 0}',
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins Regular',
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
+//BUTTON ADD PRODUCT
           Container(
             alignment: Alignment.bottomRight,
             padding: EdgeInsets.all(16),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () => Get.toNamed(Routes.ADD_PRODUCT),
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Color(0xFF802C6E)),
@@ -63,59 +240,3 @@ class HomeView extends GetView<HomeController> {
     );
   }
 }
-
-class ProductGrid extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemCount: products.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ProductCard(product: products[index]);
-      },
-    );
-  }
-}
-
-class ProductCard extends StatelessWidget {
-  final Product product;
-
-  ProductCard({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset(product.image),
-          Text(product.name),
-          Text('\$${product.price.toStringAsFixed(2)}'),
-        ],
-      ),
-    );
-  }
-}
-
-class Product {
-  final String name;
-  final double price;
-  final String image;
-
-  Product({
-    required this.name,
-    required this.price,
-    required this.image,
-  });
-}
-
-final List<Product> products = [
-  Product(name: 'Produk 1', price: 10.99, image: 'asset/klimjacket.jpeg'),
-  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/backpack.jpg'),
-  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/kaos.png'),
-  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/tas.jpg'),
-  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/jakethnm.jpg'),
-  Product(name: 'Produk 2', price: 19.99, image: 'asset/image/celana.jpg'),
-];
